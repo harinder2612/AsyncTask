@@ -6,19 +6,22 @@ import android.os.Bundle;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
      ListView mylist;
-    private  String[] texts={"harinder","pari","ankit","Sriram","Technos","Android", "ISGW","App developers","Java","php","Django"};
+    ProgressBar progressBar;
+    private  String[] texts={"harinder","pari","ankit","Sriram","Technos","Android", "ISGW","App developers","Java","php","Django","CSS","Jnode","Ruby"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.activity_main);
         mylist= (ListView) findViewById(R.id.list);
+        progressBar= (ProgressBar) findViewById(R.id.progressBar);
         mylist.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,new ArrayList<String>()));
         new myclass().execute();
     }
@@ -31,7 +34,7 @@ class myclass extends AsyncTask<Void,String,Void>
     @Override
     protected void onPreExecute() {
      adapter= (ArrayAdapter<String>) mylist.getAdapter();
-        setProgressBarIndeterminate(true);
+        setProgressBarIndeterminate(false);
         setProgressBarVisibility(true);
     }
 
@@ -40,7 +43,7 @@ class myclass extends AsyncTask<Void,String,Void>
         for(String item: texts){
         publishProgress(item);
             try {
-                Thread.sleep(200);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -52,7 +55,7 @@ class myclass extends AsyncTask<Void,String,Void>
     protected void onProgressUpdate(String... values) {
       adapter.add(values[0]);
         count++;
-        setProgress((int)(((double)count/texts.length)*10000));
+        progressBar.setProgress((int)(((double)count/texts.length)*100));
     }
 
     @Override
